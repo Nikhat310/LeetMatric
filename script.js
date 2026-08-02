@@ -24,8 +24,28 @@ document.addEventListener("DOMContentLoaded", function () {
     return isMatching;
   }
 
+  async function fetchUserDetails(username) {
+    //api call so async function used
+    const url = `https://leetcode-stats-api.herokuapp.com/${username}`;
+    try {
+      searchbutton.textContent = "Searching....";
+      searchbutton.disabled = true;
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error("Unable to fetch the user details");
+      }
+      const data = await response.json();
+      console.log("Logging data: ", data);
+    } catch (error) {
+    } finally {
+    }
+  }
+
   searchbutton.addEventListener("click", function () {
     const usename = usernameInput.value;
     console.log("Loggin usename : ", usename);
+    if (validateusername(usename)) {
+      fetchUserDetails(usename);
+    }
   });
 });
