@@ -31,8 +31,9 @@ document.addEventListener("DOMContentLoaded", function () {
     try {
       searchbutton.textContent = "Searching....";
       searchbutton.disabled = true;
+      // statsContainer.classList.add("hidden");
       // const response = await fetch(url);
-      const proxyUrl = "https://cors.isomorphic-git.org/";
+      const proxyUrl = "";
 
       const targetUrl = "https://leetcode.com/graphql/";
       const myHearders = new Headers();
@@ -46,12 +47,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const requestOptions = {
         method: "POST",
-        headers: myHearders,
+        headers: {"Content-Type":"application/json"},
         body: graphql,
         redirect: "follow",
       };
 
-      const response = await fetch(proxyUrl + targetUrl, requestOptions);
+      const response = await fetch(
+        "http://localhost:3000/api/leetcode",
+        requestOptions,
+      );
       if (!response.ok) {
         throw new Error("Unable to fetch the user details");
       }
@@ -60,7 +64,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       displayUserData(parsedData);
     } catch (error) {
-      statsContainer.innerHTML = `<p>No data found</p>`;
+      statsContainer.innerHTML = `<p>${error.message}</p>`;
     } finally {
       searchbutton.textContent = "Search";
       searchbutton.disabled = false;
@@ -134,6 +138,17 @@ document.addEventListener("DOMContentLoaded", function () {
       },
     ];
     console.log("card ka data :", cardData);
+    cardStatsContainer.innerHTML = cardData
+      .map(
+        data`
+        <div class="card">
+        <h4>${data.label}</h4>
+        <p>${data.value}</p>
+
+        
+        </div>`,
+      )
+      .join("");
   }
 
   searchbutton.addEventListener("click", function () {
