@@ -57,6 +57,7 @@ h1 {
   color: white;
   font-weight: 700;
   background: conic-gradient(#299 var(--progress-degree, 0%), #283a2e 0%);
+  flex-direction: column;
 }
 .circle span {
   position: relative;
